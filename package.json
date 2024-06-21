@@ -16,5 +16,8 @@
     "esbuild": "^0.21.2",
     "tsx": "^4.10.2",
     "typescript": "^5.4.5"
+  },
+  "dependencies": {
+    "@feathersjs/feathers": "^5.0.27"
   }
 }
