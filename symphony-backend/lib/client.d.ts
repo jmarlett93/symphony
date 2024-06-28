@@ -1,5 +1,9 @@
 import type { TransportConnection, Application } from '@feathersjs/feathers';
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client';
+import './services/pokes/pokes.shared';
+export type { Poke, PokeData, PokeQuery, PokePatch } from './services/pokes/pokes.shared';
+import './services/users/users.shared';
+export type { User, UserData, UserQuery, UserPatch } from './services/users/users.shared';
 export interface Configuration {
     connection: TransportConnection<ServiceTypes>;
 }

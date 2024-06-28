@@ -43,7 +43,8 @@
     "test": "cross-env NODE_ENV=test npm run migrate && npm run mocha",
     "bundle:client": "npm run compile && npm pack --pack-destination ./public",
     "migrate": "knex migrate:latest",
-    "migrate:make": "knex migrate:make"
+    "migrate:make": "knex migrate:make",
+    "migrate:rollback": "knex migrate:rollback"
   },
   "dependencies": {
     "@feathersjs/adapter-commons": "^5.0.27",
