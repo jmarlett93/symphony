@@ -1,6 +1,12 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <h1>Welcome to Symphony</h1>
+    <section>
+      <form>
+        <label for=""></label>
+        <input type="text" />
+      </form>
+    </section>
   </div>
 </template>
 

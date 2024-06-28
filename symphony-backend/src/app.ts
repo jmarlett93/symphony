@@ -12,15 +12,15 @@ import { services } from './services/index'
 import { channels } from './channels'
 
 const app: Application = koa(feathers())
-
-// Load our app configuration (see config/ folder)
+  
+// Load our app configuration (s ee config/ folder)
 app.configure(configuration(configurationValidator))
 
 // Set up Koa middleware
-app.use(cors())
+app.use(cors()) 
 app.use(serveStatic(app.get('public')))
 app.use(errorHandler())
-app.use(parseAuthentication())
+app.use(parseAuthentication()) 
 app.use(bodyParser())
 
 // Configure services and transports
