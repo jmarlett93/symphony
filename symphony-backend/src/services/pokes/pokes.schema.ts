@@ -18,6 +18,7 @@ export const pokeSchema = Type.Object(
     userToId: Type.Number(),
     userTo: Type.Ref(userSchema),
     createdAt: Type.Number(),
+    updatedAt: Type.Number()
   },
   { $id: 'Poke', additionalProperties: false }
 )
@@ -37,23 +38,16 @@ export const pokeResolver = resolve<Poke, HookContext>({
 export const pokeExternalResolver = resolve<Poke, HookContext<PokeService>>({})
 
 // Schema for creating new entries
-export const pokeDataSchema = Type.Pick(pokeSchema, ['text', 'userToId'], {
+export const pokeDataSchema = Type.Pick(pokeSchema, ['text', 'userToId', 'userFromId'], {
   $id: 'PokeData',
 })
-
-
 export type PokeData = Static<typeof pokeDataSchema>
 export const pokeDataValidator = getValidator(pokeDataSchema, dataValidator)
 export const pokeDataResolver = resolve<Poke, HookContext>({
-  userFromId: async (_value, _poke, context) => {
-    // Associate the record with the id of the authenticated user
-    return context.params.user.id
-  },
-  createdAt: async () => {
-    return Date.now()
-  }
+  userFromId: (value, message, context) => context.params?.user.userFromId,
+  userToId: (value, message, context) => context.params?.user.userToId,
+  createdAt: () => Date.now()
 })
-
 
 
 // Schema for updating existing entries
@@ -62,10 +56,14 @@ export const pokePatchSchema = Type.Partial(pokeSchema, {
 })
 export type PokePatch = Static<typeof pokePatchSchema>
 export const pokePatchValidator = getValidator(pokePatchSchema, dataValidator)
-export const pokePatchResolver = resolve<Poke, HookContext<PokeService>>({})
+export const pokePatchResolver = resolve<Poke, HookContext>({
+  userFromId: (value, message, context) => context.params?.user.userFromId,
+  userToId: (value, message, context) => context.params?.user.userToId,
+  updatedAt: () => Date.now()
+})
 
 // Schema for allowed query properties
-export const pokeQueryProperties = Type.Pick(pokeSchema, ['id', 'text', 'userFromId', 'userToId', 'createdAt'])
+export const pokeQueryProperties = Type.Pick(pokeSchema, ['id', 'text', 'userFromId', 'userToId', 'createdAt', 'updatedAt'])
 export const pokeQuerySchema = Type.Intersect(
   [
     querySyntax(pokeQueryProperties),
