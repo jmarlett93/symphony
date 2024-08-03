@@ -1,13 +1,15 @@
 <script setup lang="ts">
+import { setAuthToken } from '@/authentication/authentication-utils';
 import { AjaxVerbs, type RequestOptions } from '@/util/request-utilities';
 import { ref } from 'vue';
-
+import router from '../router';
 interface loginPayload {
   userName: string;
   password: string;
 }
 const userName = ref('');
 const password = ref('');
+
 /**
  * @param event
  * /users
@@ -26,15 +28,31 @@ const password = ref('');
  * /pokes | /rooms
  * { 'Content-Type': 'application/json', 'Authorization': 'Bearer <accessToken>' }
  */
+function sendRegistration(event: loginPayload) {
+  const options: RequestOptions = {
+    method: AjaxVerbs.POST,
+    headers: { 'Content-Type': 'application/json' } as unknown as Headers,
+    body: JSON.stringify({ email: event.userName, password: event.password, strategy: 'local' })
+  };
+  fetch('http://localhost:3030/users/', options).then((result) => {
+    setAuthToken(result.body.token);
+    router.push('/login');
+  });
+}
 function sendLogin(event: loginPayload) {
   const options: RequestOptions = {
     method: AjaxVerbs.POST,
     headers: { 'Content-Type': 'application/json' } as unknown as Headers,
     body: JSON.stringify({ email: event.userName, password: event.password, strategy: 'local' })
   };
-  fetch('http://localhost:3030/authentication/', options).then((result) => {
-    console.log(result);
-  });
+  fetch('http://localhost:3030/authentication/', options)
+    .then((result) => {
+      return result.json();
+    })
+    .then((body) => {
+      setAuthToken(body.accessToken);
+      router.push('/home');
+    });
 }
 </script>
 <template>

@@ -1,3 +1,4 @@
+import { isAuthenticated } from '@/authentication/authentication-utils';
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import LoginView from '../views/LoginView.vue';
@@ -5,7 +6,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
+      path: '/home',
       name: 'home',
       component: HomeView
     },
@@ -23,6 +24,12 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     }
   ]
+});
+
+router.beforeEach(async (to, from) => {
+  if (!isAuthenticated() && to.path !== '/login') {
+    return { name: 'login' };
+  }
 });
 
 export default router;

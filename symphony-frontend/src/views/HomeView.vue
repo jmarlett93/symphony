@@ -1,3 +1,5 @@
 <script setup lang="ts"></script>
 
-<template></template>
+<template>
+  <p>Home with a View</p>
+</template>
