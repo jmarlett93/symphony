@@ -4,6 +4,9 @@ import type { TransportConnection, Application } from '@feathersjs/feathers'
 import authenticationClient from '@feathersjs/authentication-client'
 import type { AuthenticationClientOptions } from '@feathersjs/authentication-client'
 
+import { roomClient } from './services/rooms/rooms.shared'
+export type { Room, RoomData, RoomQuery, RoomPatch } from './services/rooms/rooms.shared'
+
 import { pokeClient } from './services/pokes/pokes.shared'
 export type { Poke, PokeData, PokeQuery, PokePatch } from './services/pokes/pokes.shared'
 
@@ -38,5 +41,6 @@ export const createClient = <Configuration = any,>(
 
   client.configure(userClient)
   client.configure(pokeClient)
+  client.configure(roomClient)
   return client
 }
